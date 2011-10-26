@@ -20,12 +20,15 @@ module Resque
   
   # Set the queue database. Expects a Mongo::DB object.
   def mongo=(database)
-    if database.is_a?(Mongo::DB)
+    case database.class
+    when Mongo::DB
       @mongo = database
-      initialize_mongo
+    when String
+      @mongo = Mongo::Connection.new.db(database)
     else
-      raise ArgumentError, "Resque.mongo= expects a Mongo::DB database, not a #{database.class}."
+      raise ArgumentError, "Resque.mongo= expects a Mongo::DB database or a string representing the name of the database, not a #{database.class}."
     end
+    initialize_mongo
   end
 
   # Returns the current Mongo::DB. If none has been created, it will
