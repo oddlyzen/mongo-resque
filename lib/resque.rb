@@ -18,6 +18,8 @@ module Resque
   extend self
   @delayed_queues = []
   
+  attr_accessor :delayed_queues
+  
   # Set the queue database. Expects a Mongo::DB object.
   def mongo=(database)
     if database.is_a? Mongo::DB
