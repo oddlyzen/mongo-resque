@@ -162,6 +162,7 @@ module Resque
   def push(queue, item)
     queue = namespace_queue(queue)
     item[:resque_enqueue_timestamp] = Time.now
+    puts(item.inspect)
     mongo[queue] << item
   end
 
@@ -257,6 +258,10 @@ module Resque
   def remove_queue(queue)
     queue = namespace_queue(queue)
     mongo[queue].drop
+  end
+  
+  def clear_delayed_queues!
+    
   end
 
   #

@@ -49,7 +49,8 @@ module Resque
         if Resque.delayed_job?(klass)
           if args.last.is_a?(Hash) && args.last.has_key?(:delay_until)
             # Example: Resque.enqueue(WelcomeEmail, 1, delay_until: (Time.now + 24.hours))
-            item[:delay_until] = args.last[:delay_until]
+            item[:delay_until] = args.last[:delay_until].utc
+            puts "DELAYED JOB: " + args.last[:delay_until].utc.to_s
           else
             raise QueueError.new 'trying to insert delayed job without delay_until'
           end
